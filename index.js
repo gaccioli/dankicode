@@ -1,47 +1,67 @@
-const http = require('http')
 const fs = require('fs')
+const read = require('readline')
 
-const hostname = '127.0.0.1'
-const port = 3000
+    
+    const rl = read.createInterface({
+
+        input: process.stdin,
+        output: process.stdout
+    })
+    
+    rl.question('Qual seu nome?', function(name){
+        console.log('O nome inserido foi:'+name)
+        fs.appendFile('dankicode.txt', `\n${name}`, (err) => {
+            if(err) throw err
+            //console.log('Dados salvos com sucesso')
+        })
+        rl.question('Qual sua idade?', function(idade){
+            console.log('A idade inserida foi:'+idade)
+            fs.appendFile('dankicode.txt', `\n${idade}`, (err) => {
+                if(err) throw err
+                console.log('Dados salvos com sucesso')
+            })
+            fs.readFile('dankicode.txt', function(err, data) {
+
+                let str = data.toString()
+                
+                let newStr = str.split('\n')
+                console.log(newStr)
+            })
+        })
+        
+      
+    })
+
+
+    rl.on('close', function(){
+        console.log('Volte Sempre')
+        process.exit(0)
+    })
+
 
 /*
-//criar arquivo
-fs.writeFile('danki.txt', 'Teste danki aqui', function (err){
-    if(err) throw err
-    console.log('O arquivo foi criado com sucesso')
+    Deleta Arquivos
+    fs.unlink('danki.txt', function (err){
+       console.log('Arquivo deletado!')
+    })
+
+    Renomea arquivos
+  fs.rename('danki.txt', 'dankicode.txt', function (err){
+      console.log('Arquivo renomeado!')
+  })
+
+  ------------------------------------------------
+
+
+fs.readFile('danki.txt', function(err, data) {
+
+let str = data.toString()
+
+let newStr = str.split(' ')
+console.log(newStr)
+
+newStr = str.substring(0,3)
+console.log(newStr)
+
 })
 */
-
-//editar arquivo
-fs.appendFile('danki.txt', '\nConteudo adicionado', (err) =>{
-    if(err) throw err
-    console.log('O arquivo foi  Editado e salvo com sucesso')
-})
-
-
-
-const server = http.createServer((req, res) =>{
-
-    if(req.url == '/danki'){
-        fs.readFile('index.html',function(err, data) {
-
-            fs.appendFile('danki.txt', '\nConteudo adicionado dentro da Requisição', (err) =>{
-                if(err) throw err
-                console.log('O arquivo foi  Editado e salvo com sucesso')
-            })
-
-            res.writeHead(200, {'Content-Type': 'text/html'})
-            res.write(data)
-            return res.end()
-        })
-    
-    }else {
-            return res.end()
-        }
-        
-})
-
-
-server.listen(port, hostname, () => {
-    console.log('Servidor está Rodando')
-})
