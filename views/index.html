@@ -1,0 +1,17 @@
+<html>
+
+    <head> 
+        <title> Lista de Tarefas | Projeto 01</title>
+        <link href="/public/style.css" rel="stylesheet" />
+    </head>
+    <body>
+        <div class="tarefas">   
+            <% for (let i = 0; i < tarefaslist.length; i++) { %>
+            
+                <p><%= tarefaslist[i] %> | <a href="/deletar/<%= i %>">X</a></p>
+            
+            <%} %>
+
+        </div>
+    </body>
+</html>
