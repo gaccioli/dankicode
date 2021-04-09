@@ -1,7 +1,14 @@
 const express = require('express')
 const path = require('path')
+const bodyParser = require('body-parser')
 
 const app = express()
+
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ 
+    extended: true
+}))
+
 
 //receita de bolo
 // configurar o index para abrir via html na pasta views e o CSS na pasta public
@@ -13,7 +20,11 @@ app.set('views', path.join(__dirname, '/views'))
 
 var tarefas = ['Arrumar o quarto', 'Fazer Feira', 'estudar NodeJS']
 
-
+//inserir novas tarefas ao array
+app.post('/', (req, res)=>{
+    tarefas.push(req.body.tarefa)
+    res.render('index', {tarefaslist: tarefas})
+})
 
 app.get('/', (req, res) => {
 
